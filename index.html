@@ -1,232 +1,311 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Niaz</title>
 
-<title>Niaz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 
-<script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @keyframes float {
+        0% {
+          transform: translateX(-100%);
+        }
+        100% {
+          transform: translateX(200vw);
+        }
+      }
+    </style>
+  </head>
 
-<style>
-@keyframes float {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(200vw); }
-}
-</style>
-</head>
+  <body class="overflow-hidden">
+    <div
+      class="w-full h-screen flex flex-col items-center justify-center relative py-12"
+    >
+      <!-- Background -->
+      <div
+        class="absolute inset-0 bg-gradient-to-br from-sky-400 via-blue-600 to-indigo-900"
+      ></div>
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-black via-purple-950/80 to-transparent"
+      ></div>
 
-<body class="overflow-hidden">
+      <!-- Clouds -->
+      <div id="clouds" class="absolute inset-0 opacity-20"></div>
 
-<div class="w-full h-screen flex flex-col items-center justify-center relative py-12">
+      <!-- Grid -->
+      <div
+        class="absolute bottom-0 left-0 right-0 h-1/2 opacity-20"
+        style="
+          background-image:
+            linear-gradient(rgba(139, 92, 246, 0.3) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(139, 92, 246, 0.3) 1px, transparent 1px);
+          background-size: 50px 50px;
+          transform: perspective(500px) rotateX(60deg);
+          transform-origin: bottom;
+        "
+      ></div>
 
-  <!-- Background -->
-  <div class="absolute inset-0 bg-gradient-to-br from-sky-400 via-blue-600 to-indigo-900"></div>
-  <div class="absolute inset-0 bg-gradient-to-t from-black via-purple-950/80 to-transparent"></div>
+      <!-- Neon -->
+      <div class="absolute inset-0 opacity-30">
+        <div
+          class="absolute top-1/4 left-1/4 w-64 h-64 bg-pink-500 rounded-full blur-3xl"
+        ></div>
+        <div
+          class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-cyan-500 rounded-full blur-3xl"
+        ></div>
+      </div>
 
-  <!-- Clouds -->
-  <div id="clouds" class="absolute inset-0 opacity-20"></div>
+      <!-- Header -->
+      <div class="mb-12 text-center relative z-10">
+        <h1 class="text-5xl text-white mb-2 drop-shadow-lg">@niazmarudo</h1>
+        <p class="text-sky-200">Flight Attendant ✈️ | Gamer 🎮</p>
+        <p class="text-purple-300 text-sm mt-1">
+          Traveling the world & fragging in my free time
+        </p>
+      </div>
 
-  <!-- Grid -->
-  <div class="absolute bottom-0 left-0 right-0 h-1/2 opacity-20"
-    style="
-      background-image:
-        linear-gradient(rgba(139,92,246,0.3) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(139,92,246,0.3) 1px, transparent 1px);
-      background-size: 50px 50px;
-      transform: perspective(500px) rotateX(60deg);
-      transform-origin: bottom;
-    ">
-  </div>
+      <!-- Links -->
+      <div
+        id="links"
+        class="relative flex flex-col items-center gap-6 z-10"
+      ></div>
+    </div>
 
-  <!-- Neon -->
-  <div class="absolute inset-0 opacity-30">
-    <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-pink-500 rounded-full blur-3xl"></div>
-    <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-cyan-500 rounded-full blur-3xl"></div>
-  </div>
+    <script>
+      const links = [
+        {
+          title: "Ko-fi",
+          url: "https://ko-fi.com",
+          icon: "img/ko-fi.svg",
+          color: "#ff5e5b",
+        },
+        {
+          title: "Discord",
+          url: "https://discord.com",
+          icon: "img/discord.svg",
+          color: "#5865F2",
+        },
+        {
+          title: "YouTube",
+          url: "https://youtube.com",
+          icon: "img/youtube.svg",
+          color: "#FF0000",
+        },
+        {
+          title: "Facebook",
+          url: "https://facebook.com",
+          icon: "img/facebook.svg",
+          color: "#1877F2",
+        },
+        {
+          title: "TikTok",
+          url: "https://tiktok.com",
+          icon: "img/tiktok.svg",
+          color: "#000",
+        },
+        {
+          title: "Threads",
+          url: "https://threads.net",
+          icon: "img/threads.svg",
+          color: "#000",
+        },
+      ];
 
-  <!-- Header -->
-  <div class="mb-12 text-center relative z-10">
-    <h1 class="text-5xl text-white mb-2 drop-shadow-lg">@niazmarudo</h1>
-    <p class="text-sky-200">Flight Attendant ✈️ | Gamer 🎮</p>
-    <p class="text-purple-300 text-sm mt-1">
-      Traveling the world & fragging in my free time
-    </p>
-  </div>
+      const container = document.getElementById("links");
+      const isMobile = window.matchMedia("(pointer: coarse)").matches;
 
-  <!-- Links -->
-  <div id="links" class="relative flex flex-col items-center gap-6 z-10"></div>
+      const collapsedWidth = 120;
+      const expandedWidth = isMobile ? 240 : 320;
 
-</div>
+      links.forEach((link, index) => {
+        const baseOffset = isMobile ? 20 : 50;
+        const helixOffset = index % 2 === 0 ? baseOffset : -baseOffset;
+        const rotationAngle = index % 2 === 0 ? 4 : -4;
 
-<script>
-const links = [
-  { title: "Ko-fi", url: "https://ko-fi.com", icon: "img/ko-fi.svg", color: "#ff5e5b" },
-  { title: "Discord", url: "https://discord.com", icon: "img/discord.svg", color: "#5865F2" },
-  { title: "YouTube", url: "https://youtube.com", icon: "img/youtube.svg", color: "#FF0000" },
-  { title: "Facebook", url: "https://facebook.com", icon: "img/facebook.svg", color: "#1877F2" },
-  { title: "TikTok", url: "https://tiktok.com", icon: "img/tiktok.svg", color: "#000" },
-  { title: "Threads", url: "https://threads.net", icon: "img/threads.svg", color: "#000" },
-];
+        const isLeft = index % 2 === 0;
+        const dir = isLeft ? -1 : 1;
 
-const container = document.getElementById("links");
+        const a = document.createElement("a");
+        a.href = link.url;
+        a.target = "_blank";
 
-const isMobile = window.matchMedia("(pointer: coarse)").matches;
+        a.style.transform = `translateX(${helixOffset}px) rotate(${rotationAngle}deg)`;
+        a.style.transition = "transform 0.4s cubic-bezier(0.34,1.56,0.64,1)";
 
-links.forEach((link, index) => {
+        /* WRAPPER (controls ALL width) */
+        const wrapper = document.createElement("div");
+        wrapper.style.position = "relative";
+        wrapper.style.width = collapsedWidth + "px";
+        wrapper.style.height = "60px";
+        wrapper.style.transition = "width 0.5s cubic-bezier(0.34,1.56,0.64,1)";
+        wrapper.style.overflow = "visible";
 
-  const helixOffset =
-  index % 2 === 0
-    ? (isMobile ? 20 : 50)
-    : (isMobile ? -20 : -50);
-  const rotationAngle = index % 2 === 0 ? 4 : -4;
+        /* SHADOW */
+        const shadow = document.createElement("div");
+        shadow.style.position = "absolute";
+        shadow.style.inset = "0";
+        shadow.style.background = "black";
+        shadow.style.opacity = "0.25";
+        shadow.style.filter = "blur(20px)";
+        shadow.style.transform = "translateY(18px)";
+        shadow.style.clipPath =
+          "polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%)";
+        shadow.style.transition =
+          "opacity 0.3s ease, filter 0.3s ease, transform 0.5s ease";
 
-  const a = document.createElement("a");
-  a.href = link.url;
-  a.target = "_blank";
-  a.className = "relative group";
+        /* GLOW */
+        const glow = document.createElement("div");
+        glow.style.position = "absolute";
+        glow.style.inset = "0";
+        glow.style.background = link.color;
+        glow.style.opacity = "0.25";
+        glow.style.filter = "blur(25px)";
+        glow.style.transform = "scale(1.1)";
+        glow.style.clipPath =
+          "polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%)";
+        glow.style.transition =
+          "opacity 0.3s ease, filter 0.3s ease, transform 0.5s ease";
 
-  a.style.transform = `translateX(${helixOffset}px) rotate(${rotationAngle}deg)`;
-  a.style.transition = "transform 0.4s cubic-bezier(0.34,1.56,0.64,1)";
+        /* BOX (foreground shape) */
+        const box = document.createElement("div");
+        box.style.width = "100%";
+        box.style.height = "60px";
+        box.style.backgroundColor = link.color;
+        box.style.clipPath =
+          "polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%)";
+        box.style.position = "relative";
+        box.style.overflow = "hidden";
+        box.style.transition = "transform 0.3s ease";
 
-  /* WRAPPER */
-  const wrapper = document.createElement("div");
-  wrapper.style.position = "relative";
-  wrapper.style.width = "120px";
-  wrapper.style.height = "60px";
-  wrapper.style.overflow = "visible";
+        /* CONTENT */
+        const content = document.createElement("div");
+        content.style.position = "absolute";
+        content.style.inset = "0";
+        content.style.display = "block";
+        content.style.alignItems = "center";
 
-  /* SHADOW */
-  const shadow = document.createElement("div");
-  shadow.style.position = "absolute";
-  shadow.style.inset = "0";
-  shadow.style.background = "black";
-  shadow.style.opacity = "0.25";
-  shadow.style.filter = "blur(20px)";
-  shadow.style.transform = "translateY(18px)";
-  shadow.style.clipPath =
-    "polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%)";
+        const inner = document.createElement("div");
+        inner.style.display = "flex";
+        inner.style.alignItems = "center";
+        inner.style.justifyContent = "center";
+        inner.style.gap = "12px";
+        inner.style.width = "100%";
+        inner.style.height = "100%";
+        inner.style.position = "absolute";
+        inner.style.inset = "0";
+        inner.style.transition =
+          "transform 0.3s cubic-bezier(0.34,1.56,0.64,1)";
 
-  /* GLOW */
-  const glow = document.createElement("div");
-  glow.style.position = "absolute";
-  glow.style.inset = "0";
-  glow.style.background = link.color;
-  glow.style.opacity = "0.25";
-  glow.style.filter = "blur(25px)";
-  glow.style.transform = "scale(1.1)";
-  glow.style.clipPath =
-    "polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%)";
+        const contentRow = document.createElement("div");
 
-  /* HEX BOX */
-  const box = document.createElement("div");
-  box.style.width = "120px";
-  box.style.height = "60px";
-  box.style.backgroundColor = link.color;
-  box.style.clipPath =
-    "polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%)";
-  box.style.transition =
-    "width 0.5s cubic-bezier(0.34,1.56,0.64,1), transform 0.3s ease";
-  box.style.position = "relative";
-  box.style.overflow = "hidden";
+        contentRow.style.position = "absolute";
+        contentRow.style.top = "50%";
+        contentRow.style.left = "50%";
+        contentRow.style.transform = "translate(-50%, -50%)";
 
-  /* CONTENT */
-  const content = document.createElement("div");
-  content.style.position = "absolute";
-  content.style.inset = "0";
-  content.style.display = "flex";
-  content.style.alignItems = "center";
+        contentRow.style.display = "flex";
+        contentRow.style.alignItems = "center";
+        contentRow.style.gap = "12px";
+        contentRow.style.whiteSpace = "nowrap";
 
-  const inner = document.createElement("div");
-  inner.style.display = "flex";
-  inner.style.alignItems = "center";
-  inner.style.gap = "16px";
-  inner.style.paddingLeft = "46px";
-  inner.style.transition =
-    "transform 0.3s cubic-bezier(0.34,1.56,0.64,1)";
+        contentRow.style.transition = "transform 0.3s ease";
 
-  const icon = document.createElement("img");
-  icon.src = link.icon;
-  icon.alt = link.title;
-  icon.style.width = "32px";
-  icon.style.height = "32px";
-  icon.style.objectFit = "contain";
+        const icon = document.createElement("img");
+        icon.src = link.icon;
+        icon.style.width = "32px";
+        icon.style.height = "32px";
+        icon.style.transition = "all 0.3s ease"
 
-  const text = document.createElement("span");
-  text.textContent = link.title;
-  text.style.color = "white";
-  text.style.fontSize = "20px";
-  text.style.whiteSpace = "nowrap";
-  text.style.opacity = "0";
-  text.style.transform = "translateX(-20px)";
-  text.style.transition = "all 0.3s ease";
+        const text = document.createElement("span");
+        text.textContent = link.title;
+        text.style.color = "white";
+        text.style.fontSize = "20px";
+        text.style.whiteSpace = "nowrap";
+        text.style.opacity = "0";
+        text.style.marginLeft = "0px";
+        text.style.overflow = "hidden";
+        text.style.transition = "opacity 0.3s ease, margin 0.3s ease";
 
-  inner.appendChild(icon);
-  inner.appendChild(text);
-  content.appendChild(inner);
+        inner.appendChild(icon);
+        inner.appendChild(text);
+        contentRow.appendChild(icon);
+        contentRow.appendChild(text);
+        inner.appendChild(contentRow);
+        content.appendChild(inner);
+        box.appendChild(content);
 
-  wrapper.appendChild(shadow);
-  wrapper.appendChild(glow);
-  wrapper.appendChild(box);
-  box.appendChild(content);
-  a.appendChild(wrapper);
-  container.appendChild(a);
+        wrapper.appendChild(shadow);
+        wrapper.appendChild(glow);
+        wrapper.appendChild(box);
+        a.appendChild(wrapper);
+        container.appendChild(a);
 
-  /* STATES */
-  function expand() {
-    box.style.width = "280px";
-    box.style.transform = "scale(1.05) translateY(-4px)";
-    inner.style.transform = "translateX(30px)";
-    text.style.opacity = "1";
-    text.style.transform = "translateX(0)";
-    shadow.style.opacity = "0.4";
-    shadow.style.filter = "blur(30px)";
-    glow.style.opacity = "0.55";
-    glow.style.filter = "blur(35px)";
-  }
+        /* STATE */
+        function expand() {
+          wrapper.style.width = expandedWidth + "px";
+          box.style.transform = "translateY(-4px)";
 
-  function collapse() {
-    box.style.width = "120px";
-    box.style.transform = "";
-    inner.style.transform = "translateX(0)";
-    text.style.opacity = "0";
-    text.style.transform = "translateX(-20px)";
-    shadow.style.opacity = "0.25";
-    shadow.style.filter = "blur(20px)";
-    glow.style.opacity = "0.25";
-    glow.style.filter = "blur(25px)";
-  }
+          text.style.opacity = "1";
+          text.style.marginLeft = "8px";
+          text.style.width="100%";
+          icon.style.marginLeft ="0px"
 
-  /* MOBILE = ALWAYS EXPANDED */
-  if (isMobile) {
-    expand();
-  } else {
-    collapse();
+          shadow.style.opacity = "0.45";
+          shadow.style.filter = "blur(30px)";
+          shadow.style.transform = "translateY(24px)";
 
-    a.addEventListener("mouseenter", expand);
-    a.addEventListener("mouseleave", collapse);
-  }
-});
+          glow.style.opacity = "0.55";
+          glow.style.filter = "blur(35px)";
+          glow.style.transform = "scaleX(1.05) scaleY(1.1) translateY(-4px)";
+        }
 
-/* CLOUDS */
-const cloudsContainer = document.getElementById("clouds");
+        function collapse() {
+          wrapper.style.width = collapsedWidth + "px";
+          box.style.transform = "translateY(0px)";
 
-for (let i = 0; i < 6; i++) {
-  const cloud = document.createElement("div");
-  cloud.style.position = "absolute";
-  cloud.style.background = "white";
-  cloud.style.borderRadius = "999px";
-  cloud.style.filter = "blur(20px)";
-  cloud.style.width = Math.random() * 300 + 150 + "px";
-  cloud.style.height = Math.random() * 80 + 40 + "px";
-  cloud.style.top = Math.random() * 40 + "%";
-  cloud.style.left = Math.random() * 100 + "%";
-  cloud.style.animation = `float ${Math.random() * 20 + 20}s linear infinite`;
-  cloud.style.animationDelay = `${Math.random() * -20}s`;
+          text.style.opacity = "0";
+          text.style.marginLeft = "0px";
+          text.style.width="0%";
+          icon.style.marginLeft ="45px"
 
-  cloudsContainer.appendChild(cloud);
-}
-</script>
+          shadow.style.opacity = "0.25";
+          shadow.style.filter = "blur(20px)";
+          shadow.style.transform = "translateY(18px)";
 
-</body>
+          glow.style.opacity = "0.25";
+          glow.style.filter = "blur(25px)";
+          glow.style.transform = "scale(1.1)";
+        }
+
+        if (isMobile) {
+          expand();
+        } else {
+          collapse();
+          a.addEventListener("mouseenter", expand);
+          a.addEventListener("mouseleave", collapse);
+        }
+      });
+
+      /* CLOUDS */
+      const cloudsContainer = document.getElementById("clouds");
+
+      for (let i = 0; i < 6; i++) {
+        const cloud = document.createElement("div");
+        cloud.style.position = "absolute";
+        cloud.style.background = "white";
+        cloud.style.borderRadius = "999px";
+        cloud.style.filter = "blur(20px)";
+        cloud.style.width = Math.random() * 300 + 150 + "px";
+        cloud.style.height = Math.random() * 80 + 40 + "px";
+        cloud.style.top = Math.random() * 40 + "%";
+        cloud.style.left = Math.random() * 100 + "%";
+        cloud.style.animation = `float ${Math.random() * 20 + 20}s linear infinite`;
+        cloud.style.animationDelay = `${Math.random() * -20}s`;
+
+        cloudsContainer.appendChild(cloud);
+      }
+    </script>
+  </body>
 </html>
