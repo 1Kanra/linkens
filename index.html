@@ -75,7 +75,10 @@ const isMobile = window.matchMedia("(pointer: coarse)").matches;
 
 links.forEach((link, index) => {
 
-  const helixOffset = index % 2 === 0 ? 50 : -50;
+  const helixOffset =
+  index % 2 === 0
+    ? (isMobile ? 20 : 50)
+    : (isMobile ? -20 : -50);
   const rotationAngle = index % 2 === 0 ? 4 : -4;
 
   const a = document.createElement("a");
