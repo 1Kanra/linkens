@@ -119,8 +119,8 @@
 
       /* CREATE LINKS */
       links.forEach((link, index) => {
-        const helixOffset = index % 2 === 0 ? 60 : -60;
-        const rotationAngle = index % 2 === 0 ? 2 : -2;
+        const helixOffset = index % 2 === 0 ? 50 : -50;
+        const rotationAngle = index % 2 === 0 ? 4 : -4;
 
         const a = document.createElement("a");
         a.href = link.url;
@@ -132,7 +132,7 @@
 
         const box = document.createElement("div");
         box.style.width = "120px";
-        box.style.height = "100px";
+        box.style.height = "60px";
         box.style.backgroundColor = link.color;
         box.style.clipPath =
           "polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%)";
