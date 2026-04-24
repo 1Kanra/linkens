@@ -119,10 +119,12 @@
       const collapsedWidth = 120;
       const expandedWidth = isMobile ? 240 : 320;
 
-      let isTabActive = true;
-
       document.addEventListener("visibilitychange", () => {
-        isTabActive = !document.hidden;
+        if (document.hidden) {
+          stopSpawning(); // pause completely
+        } else {
+          startSpawning(); // resume clean
+        }
       });
 
       links.forEach((link, index) => {
@@ -436,13 +438,29 @@
         }
 
         // spawn timing
-        setTimeout(() => {
-          if (!isTabActive) return spawnPlane(); // first after 1s
+        let spawnInterval = null;
 
-          setInterval(() => {
-            spawnPlane(); // every 7s
-          }, 4000);
-        }, 200);
+        function startSpawning() {
+          // prevent duplicates
+          if (spawnInterval) return;
+
+          spawnPlane(); // immediate spawn when returning
+
+          spawnInterval = setInterval(() => {
+            spawnPlane();
+          }, 7000);
+        }
+
+        function stopSpawning() {
+          if (spawnInterval !== null) {
+            clearInterval(spawnInterval);
+            spawnInterval = null;
+          }
+        }
+
+        setTimeout(() => {
+          startSpawning();
+        }, 1000);
       });
     </script>
   </body>
