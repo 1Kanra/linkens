@@ -1,165 +1,210 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<title>Skybound Gamer</title>
+    <title>Skybound Gamer</title>
 
-<!-- Tailwind CDN -->
-<script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-<!-- Icons (Lucide CDN) -->
-<script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+      @keyframes float {
+        0% {
+          transform: translateX(-100%);
+        }
+        100% {
+          transform: translateX(200vw);
+        }
+      }
+    </style>
+  </head>
 
-<style>
-@keyframes float {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(200vw); }
-}
-</style>
-</head>
+  <body class="overflow-hidden">
+    <div
+      class="w-full h-screen flex flex-col items-center justify-center relative py-12"
+    >
+      <!-- Background -->
+      <div
+        class="absolute inset-0 bg-gradient-to-br from-sky-400 via-blue-600 to-indigo-900"
+      ></div>
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-black via-purple-950/80 to-transparent"
+      ></div>
 
-<body class="overflow-hidden">
+      <!-- Clouds -->
+      <div id="clouds" class="absolute inset-0 opacity-20"></div>
 
-<div class="w-full h-screen flex flex-col items-center justify-center relative py-12">
+      <!-- Grid -->
+      <div
+        class="absolute bottom-0 left-0 right-0 h-1/2 opacity-20"
+        style="
+          background-image:
+            linear-gradient(rgba(139, 92, 246, 0.3) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(139, 92, 246, 0.3) 1px, transparent 1px);
+          background-size: 50px 50px;
+          transform: perspective(500px) rotateX(60deg);
+          transform-origin: bottom;
+        "
+      ></div>
 
-  <!-- Background -->
-  <div class="absolute inset-0 bg-gradient-to-br from-sky-400 via-blue-600 to-indigo-900"></div>
-  <div class="absolute inset-0 bg-gradient-to-t from-black via-purple-950/80 to-transparent"></div>
+      <!-- Neon -->
+      <div class="absolute inset-0 opacity-30">
+        <div
+          class="absolute top-1/4 left-1/4 w-64 h-64 bg-pink-500 rounded-full blur-3xl"
+        ></div>
+        <div
+          class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-cyan-500 rounded-full blur-3xl"
+        ></div>
+      </div>
 
-  <!-- Clouds -->
-  <div id="clouds" class="absolute inset-0 opacity-20"></div>
+      <!-- Header -->
+      <div class="mb-12 text-center relative z-10">
+        <h1 class="text-5xl text-white mb-2 drop-shadow-lg">@niazmarudo</h1>
+        <p class="text-sky-200">Flight Attendant ✈️ | Gamer 🎮</p>
+        <p class="text-purple-300 text-sm mt-1">
+          Traveling the world & fragging in my free time
+        </p>
+      </div>
 
-  <!-- Grid -->
-  <div class="absolute bottom-0 left-0 right-0 h-1/2 opacity-20"
-    style="
-      background-image:
-        linear-gradient(rgba(139,92,246,0.3) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(139,92,246,0.3) 1px, transparent 1px);
-      background-size: 50px 50px;
-      transform: perspective(500px) rotateX(60deg);
-      transform-origin: bottom;
-    ">
-  </div>
+      <!-- Links -->
+      <div
+        id="links"
+        class="relative flex flex-col items-center gap-6 z-10"
+      ></div>
+    </div>
 
-  <!-- Neon -->
-  <div class="absolute inset-0 opacity-30">
-    <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-pink-500 rounded-full blur-3xl"></div>
-    <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-cyan-500 rounded-full blur-3xl"></div>
-  </div>
+    <script>
+      const links = [
+        {
+          title: "Ko-fi",
+          url: "https://ko-fi.com",
+          icon: "img/ko-fi.svg",
+          color: "#ff5e5b",
+        },
+        {
+          title: "Discord",
+          url: "https://discord.com",
+          icon: "img/discord.svg",
+          color: "#5865F2",
+        },
+        {
+          title: "YouTube",
+          url: "https://youtube.com",
+          icon: "img/youtube.svg",
+          color: "#FF0000",
+        },
+        {
+          title: "Facebook",
+          url: "https://facebook.com",
+          icon: "img/facebook.svg",
+          color: "#1877F2",
+        },
+        {
+          title: "TikTok",
+          url: "https://tiktok.com",
+          icon: "img/tiktok.svg",
+          color: "#000000",
+        },
+        {
+          title: "Threads",
+          url: "https://threads.net",
+          icon: "img/threads.svg",
+          color: "#000000",
+        },
+      ];
 
-  <!-- Header -->
-  <div class="mb-12 text-center relative z-10">
-    <h1 class="text-5xl text-white mb-2 drop-shadow-lg">@niazmarudo</h1>
-    <p class="text-sky-200">Flight Attendant ✈️ | Gamer 🎮</p>
-    <p class="text-purple-300 text-sm mt-1">Traveling the world & fragging in my free time</p>
-  </div>
+      const container = document.getElementById("links");
 
-  <!-- Links -->
-  <div id="links" class="relative flex flex-col items-center gap-6 z-10"></div>
+      /* CREATE LINKS */
+      links.forEach((link, index) => {
+        const helixOffset = index % 2 === 0 ? 60 : -60;
+        const rotationAngle = index % 2 === 0 ? 2 : -2;
 
-</div>
+        const a = document.createElement("a");
+        a.href = link.url;
+        a.target = "_blank";
+        a.className = "relative group";
 
-<script>
-const links = [
-  { title: 'Ko-fi', url: 'https://ko-fi.com', icon: 'coffee', color: '#ff5e5b' },
-  { title: 'Discord', url: 'https://discord.com', icon: 'message-circle', color: '#5865F2' },
-  { title: 'YouTube', url: 'https://youtube.com', icon: 'youtube', color: '#FF0000' },
-  { title: 'Facebook', url: 'https://facebook.com', icon: 'facebook', color: '#1877F2' },
-  { title: 'TikTok', url: 'https://tiktok.com', icon: 'music', color: '#000000' },
-  { title: 'Threads', url: 'https://threads.net', icon: 'at-sign', color: '#000000' },
-];
+        a.style.transform = `translateX(${helixOffset}px) rotate(${rotationAngle}deg)`;
+        a.style.transition = "transform 0.4s cubic-bezier(0.34,1.56,0.64,1)";
 
-const container = document.getElementById("links");
+        const box = document.createElement("div");
+        box.style.width = "120px";
+        box.style.height = "100px";
+        box.style.backgroundColor = link.color;
+        box.style.clipPath =
+          "polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%)";
+        box.style.transition =
+          "width 0.5s cubic-bezier(0.34,1.56,0.64,1), transform 0.3s ease";
+        box.className = "relative overflow-hidden";
 
-/* CREATE LINKS */
-links.forEach((link, index) => {
+        const content = document.createElement("div");
+        content.className = "absolute inset-0 flex items-center";
 
-  const helixOffset = index % 2 === 0 ? 60 : -60;
-  const rotationAngle = index % 2 === 0 ? 2 : -2;
+        const inner = document.createElement("div");
+        inner.className = "flex items-center gap-4 pl-[46px]";
+        inner.style.transition =
+          "transform 0.3s cubic-bezier(0.34,1.56,0.64,1)";
 
-  const a = document.createElement("a");
-  a.href = link.url;
-  a.target = "_blank";
-  a.className = "relative group";
+        const icon = document.createElement("img");
+        icon.src = link.icon;
+        icon.alt = link.title;
+        icon.className = "w-8 h-8 object-contain flex-shrink-0";
 
-  a.style.transform = `translateX(${helixOffset}px) rotate(${rotationAngle}deg)`;
-  a.style.transition = "transform 0.4s cubic-bezier(0.34,1.56,0.64,1)";
+        const text = document.createElement("span");
+        text.textContent = link.title;
+        text.className = "text-white text-xl whitespace-nowrap";
+        text.style.opacity = "0";
+        text.style.transform = "translateX(-20px)";
+        text.style.transition = "all 0.3s ease";
 
-  const box = document.createElement("div");
-  box.style.width = "120px";
-  box.style.height = "100px";
-  box.style.backgroundColor = link.color;
-  box.style.clipPath = "polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%)";
-  box.style.transition = "width 0.5s cubic-bezier(0.34,1.56,0.64,1), transform 0.3s ease";
-  box.className = "relative overflow-hidden";
+        inner.appendChild(icon);
+        inner.appendChild(text);
+        content.appendChild(inner);
+        box.appendChild(content);
+        a.appendChild(box);
 
-  const content = document.createElement("div");
-  content.className = "absolute inset-0 flex items-center";
+        /* HOVER LOGIC */
+        a.addEventListener("mouseenter", () => {
+          box.style.width = "280px";
+          box.style.transform = "rotate(0deg) scale(1.05)";
+          inner.style.transform = "translateX(30px)";
+          text.style.opacity = "1";
+          text.style.transform = "translateX(0)";
+        });
 
-  const inner = document.createElement("div");
-  inner.className = "flex items-center gap-4 pl-[46px]";
-  inner.style.transition = "transform 0.3s cubic-bezier(0.34,1.56,0.64,1)";
+        a.addEventListener("mouseleave", () => {
+          box.style.width = "120px";
+          box.style.transform = "";
+          inner.style.transform = "translateX(0)";
+          text.style.opacity = "0";
+          text.style.transform = "translateX(-20px)";
+        });
 
-  const icon = document.createElement("i");
-  icon.setAttribute("data-lucide", link.icon);
-  icon.className = "w-8 h-8 text-white";
+        container.appendChild(a);
+      });
 
-  const text = document.createElement("span");
-  text.textContent = link.title;
-  text.className = "text-white text-xl whitespace-nowrap";
-  text.style.opacity = "0";
-  text.style.transform = "translateX(-20px)";
-  text.style.transition = "all 0.3s ease";
+      /* INIT ICONS */
 
-  inner.appendChild(icon);
-  inner.appendChild(text);
-  content.appendChild(inner);
-  box.appendChild(content);
-  a.appendChild(box);
+      /* CLOUD GENERATION (same as React random) */
+      const cloudsContainer = document.getElementById("clouds");
 
-  /* HOVER LOGIC */
-  a.addEventListener("mouseenter", () => {
-    box.style.width = "280px";
-    box.style.transform = "rotate(0deg) scale(1.05)";
-    inner.style.transform = "translateX(30px)";
-    text.style.opacity = "1";
-    text.style.transform = "translateX(0)";
-  });
+      for (let i = 0; i < 6; i++) {
+        const cloud = document.createElement("div");
 
-  a.addEventListener("mouseleave", () => {
-    box.style.width = "120px";
-    box.style.transform = "";
-    inner.style.transform = "translateX(0)";
-    text.style.opacity = "0";
-    text.style.transform = "translateX(-20px)";
-  });
+        cloud.className = "absolute bg-white rounded-full blur-2xl";
 
-  container.appendChild(a);
-});
+        cloud.style.width = Math.random() * 300 + 150 + "px";
+        cloud.style.height = Math.random() * 80 + 40 + "px";
+        cloud.style.top = Math.random() * 40 + "%";
+        cloud.style.left = Math.random() * 100 + "%";
+        cloud.style.animation = `float ${Math.random() * 20 + 20}s linear infinite`;
+        cloud.style.animationDelay = `${Math.random() * -20}s`;
 
-/* INIT ICONS */
-lucide.createIcons();
-
-/* CLOUD GENERATION (same as React random) */
-const cloudsContainer = document.getElementById("clouds");
-
-for (let i = 0; i < 6; i++) {
-  const cloud = document.createElement("div");
-
-  cloud.className = "absolute bg-white rounded-full blur-2xl";
-
-  cloud.style.width = (Math.random() * 300 + 150) + "px";
-  cloud.style.height = (Math.random() * 80 + 40) + "px";
-  cloud.style.top = (Math.random() * 40) + "%";
-  cloud.style.left = (Math.random() * 100) + "%";
-  cloud.style.animation = `float ${Math.random()*20+20}s linear infinite`;
-  cloud.style.animationDelay = `${Math.random()*-20}s`;
-
-  cloudsContainer.appendChild(cloud);
-}
-</script>
-
-</body>
+        cloudsContainer.appendChild(cloud);
+      }
+    </script>
+  </body>
 </html>
