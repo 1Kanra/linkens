@@ -119,6 +119,12 @@
       const collapsedWidth = 120;
       const expandedWidth = isMobile ? 240 : 320;
 
+      let isTabActive = true;
+
+      document.addEventListener("visibilitychange", () => {
+        isTabActive = !document.hidden;
+      });
+
       links.forEach((link, index) => {
         const baseOffset = isMobile ? 20 : 50;
         const helixOffset = index % 2 === 0 ? baseOffset : -baseOffset;
@@ -338,6 +344,106 @@
 
         cloudsContainer.appendChild(cloud);
       }
+
+      window.addEventListener("DOMContentLoaded", () => {
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+
+        document.addEventListener("mousemove", (e) => {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+        });
+
+        function spawnPlane() {
+          const plane = document.createElement("img");
+          plane.src = "img/airplane.png";
+
+          plane.style.position = "absolute";
+          plane.style.zIndex = "9999";
+          plane.style.width = "60px";
+          plane.style.height = "auto";
+          plane.style.pointerEvents = "none";
+          plane.style.filter = "drop-shadow(0 10px 15px rgba(0,0,0,0.4))";
+
+          document.body.appendChild(plane);
+
+          const edge = Math.floor(Math.random() * 4);
+
+          let x, y;
+
+          if (edge === 0) {
+            x = Math.random() * window.innerWidth;
+            y = -100;
+          } else if (edge === 1) {
+            x = window.innerWidth + 100;
+            y = Math.random() * window.innerHeight;
+          } else if (edge === 2) {
+            x = Math.random() * window.innerWidth;
+            y = window.innerHeight + 100;
+          } else {
+            x = -100;
+            y = Math.random() * window.innerHeight;
+          }
+
+          let locked = false;
+          let vx = 0;
+          let vy = 0;
+          const speed = 3.5 + Math.random() - 0.5;
+
+          function updateVelocity() {
+            const dx = mouseX - x;
+            const dy = mouseY - y;
+
+            const angle = Math.atan2(dy, dx);
+
+            vx = Math.cos(angle) * speed;
+            vy = Math.sin(angle) * speed;
+
+            const deg = (angle * 180) / Math.PI + 90;
+            plane.style.transform = `rotate(${deg}deg)`;
+          }
+
+          updateVelocity();
+
+          const followInterval = setInterval(updateVelocity, 50);
+
+          setTimeout(() => {
+            locked = true;
+            clearInterval(followInterval);
+          }, 2500);
+
+          function move() {
+            x += vx;
+            y += vy;
+
+            plane.style.left = x + "px";
+            plane.style.top = y + "px";
+
+            const stillOnScreen =
+              x > -200 &&
+              x < window.innerWidth + 200 &&
+              y > -200 &&
+              y < window.innerHeight + 200;
+
+            if (stillOnScreen) {
+              requestAnimationFrame(move);
+            } else {
+              plane.remove();
+            }
+          }
+
+          move();
+        }
+
+        // spawn timing
+        setTimeout(() => {
+          if (!isTabActive) return spawnPlane(); // first after 1s
+
+          setInterval(() => {
+            spawnPlane(); // every 7s
+          }, 4000);
+        }, 200);
+      });
     </script>
   </body>
 </html>
