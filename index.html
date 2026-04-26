@@ -77,37 +77,37 @@
       const links = [
         {
           title: "Ko-fi",
-          url: "https://ko-fi.com",
+          url: "https://ko-fi.com/niazmarudo",
           icon: "img/ko-fi.svg",
           color: "#ff5e5b",
         },
         {
-          title: "Discord",
-          url: "https://discord.com",
-          icon: "img/discord.svg",
-          color: "#5865F2",
-        },
-        {
           title: "YouTube",
-          url: "https://youtube.com",
+          url: "https://www.youtube.com/@niazmarudo",
           icon: "img/youtube.svg",
           color: "#FF0000",
         },
         {
           title: "Facebook",
-          url: "https://facebook.com",
+          url: "https://www.facebook.com/niazzmarudo",
           icon: "img/facebook.svg",
           color: "#1877F2",
         },
         {
           title: "TikTok",
-          url: "https://tiktok.com",
+          url: "https://www.tiktok.com/@niaz.marudo?_r=1&_t=ZS-95rGaDG2B6Y",
           icon: "img/tiktok.svg",
           color: "#000",
         },
         {
+          title: "Tiktok Gaming",
+          url: "https://www.tiktok.com/@nzmik0103?_r=1&_t=ZS-95rGct4JIEU",
+          icon: "img/controller.svg",
+          color: "#111",
+        },
+        {
           title: "Threads",
-          url: "https://threads.net",
+          url: "https://www.threads.com/@niazmarudo?igshid=NTc4MTIwNjQ2YQ%3D%3D",
           icon: "img/threads.svg",
           color: "#000",
         },
@@ -117,7 +117,7 @@
       const isMobile = window.matchMedia("(pointer: coarse)").matches;
 
       const collapsedWidth = 120;
-      const expandedWidth = isMobile ? 240 : 320;
+      const expandedWidth = isMobile ? 240 : 360;
 
       document.addEventListener("visibilitychange", () => {
         if (document.hidden) {
@@ -260,6 +260,7 @@
           text.style.opacity = "1";
           text.style.marginLeft = "8px";
           text.style.width = "100%";
+          text.style.fontSize = isMobile ? "15px" : "20px";
           icon.style.marginLeft = "0px";
 
           shadow.style.opacity = "0.45";
@@ -277,8 +278,9 @@
 
           text.style.opacity = "0";
           text.style.marginLeft = "0px";
+          text.style.fontSize = "0px";
           text.style.width = "0%";
-          icon.style.marginLeft = "45px";
+          icon.style.marginLeft = "10px";
 
           shadow.style.opacity = "0.25";
           shadow.style.filter = "blur(20px)";
@@ -412,7 +414,7 @@
           setTimeout(() => {
             locked = true;
             clearInterval(followInterval);
-          }, 2500);
+          }, 1500);
 
           function move() {
             x += vx;
